@@ -1,3 +1,13 @@
+# Info
+
+This is a project by Heinrich Grattenthaler, Filip Jaksic, Jannis Widmer and Fabian Landwehr. It is an online group chat application with a visual easy-to-use interface. We built this prototype as part of the course *Human Computer Interaction* at ETH Zürich.
+
+The live demo can be opened at [groupchat.ch](groupchat.ch).
+
+To learn more about this project, you can visit our [development blog](https://www.notion.so/fabianla/HCI-Project-Blog-Group-6-0ad4dbe1ea684b02a3ff3853f6a5699b).
+
+You can also watch the [trailer video on YouTube](https://www.youtube.com/watch?v=zj3H9nqb_1E&t=7s).
+
 # How to start the servers
 
 ## How to run this
