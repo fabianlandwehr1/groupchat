@@ -1,0 +1,117 @@
+.userbubble {
+	position: relative;
+	text-align: center;
+	display: table;
+	height: 120px;
+	margin-top: 3px;
+	max-width: 120px;
+	overflow-x: visible;
+	line-height: 1;
+}
+
+.remote_userbubble {
+	transition: all 0.1s linear;
+	cursor: pointer;
+}
+
+.snap {
+	transition: transform .2s ease-in-out;
+}
+
+.avatar {
+	position: relative;
+	left: calc( 50% - 40px );
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+  	margin: 5px;
+  	margin-left: 0;
+  	margin-right: 0;
+	display: block;
+	pointer-events: none;
+	border-style: solid;
+	border-color: black;
+	border-width: 3px;
+	background-color: white;
+
+	transition: box-shadow .2s ease-in-out, transform .2s ease-in-out;
+}
+
+#offlinearea .remote_userbubble {
+	filter: grayscale(90%);
+}
+
+#canvas .userbubble {
+	filter: grayscale(0%);
+}
+
+.local {
+	cursor: grab;
+	z-index: 1000;
+	position: relative;
+}
+
+.drag {
+	cursor: grabbing;
+}
+
+.drag .avatar {
+	-webkit-box-shadow: 0px 4px 24px 0px rgba(0,0,0,0.45);
+	-moz-box-shadow: 0px 4px 24px 0px rgba(0,0,0,0.45);
+	box-shadow: 0px 4px 24px 0px rgba(0,0,0,0.45);
+
+	transform: scale(1.07);
+}
+
+.information_icon {
+	width: 20px;
+	height: 20px;
+	display: none;
+	visibility: collapse;
+	opacity: 0;
+	transition: all 0.2s ease-in-out;
+	margin: 0 2px;
+
+}
+
+.icon_area {
+	position:relative;
+	display: flex;
+	margin-top: 5px;
+	margin-left: auto;
+	margin-right: auto;
+	justify-content: center;
+	height:20px;
+}
+
+.icon_active {
+	visibility: visible;
+	display:inline;
+	opacity: 1
+}
+
+.avatar_text {
+	text-align: center;
+}
+
+
+.badge {
+    position: absolute;
+    top: 5px;
+	right: 5px;
+	width: fit-content;
+    padding: 3px 9px;
+    border-radius:100px;
+    background: #ff0000;
+    -webkit-background-clip: padding-box;
+    font:bold 16px/20px "Helvetica Neue", sans-serif;
+    color: white;
+    cursor: pointer;
+    margin-bottom: -26px;
+    transition: transform 0.2s;
+}
+
+.badge:hover {
+
+	transform: scale( 1.2 );
+}

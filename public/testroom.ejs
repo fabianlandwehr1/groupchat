@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script>
+    const ROOM_ID = "<%= roomId %>";
+    const USERNAME = "<%= username %>";
+    window.history.replaceState( null, "2D Market", ROOM_ID );
+  </script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.3.1/peerjs.min.js"></script>
+  <script src="/socket.io/socket.io.js" defer></script>
+  <script src="script.js" defer></script>
+  <script src="draggable/drag.js"></script>
+  <script type="text/javascript">
+    //global variables, initialized elsewhere (usually main.js)
+
+      var localUserBubbleView = null; //should only be used by localuserbubble.js
+      var remoteUserBubbleViews = new Map(); //should only be used by remoteuserbubble.js. Links from userid -> userView
+      var offlinearea = null;
+      var canvas = null;
+      var mutebutton = null;
+      var isMuted = false;
+      var publicspeakerbutton = null;
+      var isPublicSpeaker = false;
+      var roomnumberinfo = null;
+      var roomparticipantsinfo = null;
+      var viewParent = null;
+      var drawSVG = null;
+
+    </script>
+    <script src="userbubble/userbubble.js"></script>
+    <script src="syncconnection/syncconnection.js"></script>
+    <script src="localuserbubble/localuserbubble.js"></script>
+    <script src="remoteuserbubble/remoteuserbubble.js"></script>
+    <script src="localusercontrols/localusercontrols.js"></script>
+    <script src="offlinemsg/offlinemsg.js"></script>
+    <script src="main.js"></script>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <link rel="stylesheet" type="text/css" href="userbubble/userbubble.css">
+    <link rel="stylesheet" type="text/css" href="localusercontrols/localusercontrols.css">
+    <title>2D Market</title>
+  </head>
+  <body>
+    <div id="viewparent">
+      <div id="movingcanvas">
+        <svg id="drawsvg"></svg>
+        <div id="controlpanel">
+          <div class="interactivebutton" id="mutebutton">
+            <div class="tooltipsupport"><div class="tooltip">Mute Yourself</div></div>
+            <img src="icons/microphone.png">
+          </div>
+          <div class="interactivebutton" id="publicspeakerbutton">
+              <div class="tooltipsupport"><div class="tooltip">Speak Up</div></div>
+              <img src="icons/megaphone_quiet.png">
+          </div>
+        </div>
+        <div id="roominfo">
+          <div id="roomnumberinfo">
+              Room X
+          </div>
+          <div id="roomparticipantsinfo">
+              Y participants
+          </div>
+        </div>
+      </div>
+      <div id="offlinearea">
+        <div id="offlineareatitle">
+          Offline Area
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

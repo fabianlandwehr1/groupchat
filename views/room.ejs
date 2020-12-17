@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="main.css">
+  <link rel="stylesheet" type="text/css" href="userbubble/userbubble.css">
+  <link rel="stylesheet" type="text/css" href="localusercontrols/localusercontrols.css">
+  <link rel="stylesheet" type="text/css" href="bubbledrawer/bubbledrawer.css">
+  <script src="avatarcreator/avatargenerator.js"></script>
+  <script src="cookiehandler/cookiehandler.js"></script>
+  <script>
+    const ROOM_ID = "<%= roomId %>";
+    var USERNAME = "<%= username %>";
+
+    setRoomIdCookie(ROOM_ID);
+
+    if (usernameCookieExists()) {
+      USERNAME = getUsernameCookie();
+    } else {
+      //setUsernameCookie(USERNAME);
+      window.location.replace("https://groupchat.ch");
+    }
+
+    // I changed 2D Market to Groupchat in the next line. Hope that's okay
+    window.history.replaceState( null, "GroupChat", ROOM_ID );
+    document.title = "GroupChat — " + ROOM_ID
+  </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.3.1/peerjs.min.js"></script>
+  <script src="/socket.io/socket.io.js" defer></script>
+  <script src="script.js" defer></script>
+  <script src="draggable/drag.js"></script>
+  <script type="text/javascript">
+    //global variables, initialized elsewhere (usually main.js)
+
+      var localUserBubbleView = null; //should only be used by localuserbubble.js
+      var remoteUserBubbleViews = new Map(); //should only be used by remoteuserbubble.js. Links from userid -> userView
+      var offlinearea = null;
+      var canvas = null;
+      var mutebutton = null;
+      var isMuted = false;
+      var publicspeakerbutton = null;
+      var isPublicSpeaker = false;
+      var roomnumberinfo = null;
+      var roomparticipantsinfo = null;
+      var viewParent = null;
+      var drawSVG = null;
+      var fixedUserBubbleHeight = null; //Assume that all userBubbles have the same size over a run
+      var fixedUserBubbleWidth = null;
+
+      var remoteUserViewMap = {};
+      var globPlayerIdToIndexStore = {};
+      var globPlayerXs = [];
+      var globPlayerYs = [];
+      var globPlayerAssignments = [];
+    </script>
+    <script src="userbubble/userbubble.js"></script>
+    <script src="syncconnection/syncconnection.js"></script>
+    <script src="localuserbubble/localuserbubble.js"></script>
+    <script src="remoteuserbubble/remoteuserbubble.js"></script>
+    <script src="localusercontrols/localusercontrols.js"></script>
+    <script src="bubbledrawer/bubbledrawer.js"></script>
+    <script src="bubbledrawer/smallest-enclosing-circle.js"></script>
+    <script src="main.js"></script>
+    <title>GroupChat</title>
+  </head>
+  <body>
+    <div id="viewparent">
+      <div id="movingcanvas">
+        <div id="group_bubble_circles"></div>
+        <div id="controlpanel">
+          <div class="interactivebutton" id="mutebutton">
+            <div class="tooltipsupport"><div class="tooltip">Mute Yourself</div></div>
+            <img src="icons/icons_pas/mic_50x50px.svg">
+          </div>
+          <div class="interactivebutton" id="publicspeakerbutton">
+              <div class="tooltipsupport"><div class="tooltip">Speak Up</div></div>
+              <img src="icons/icons_pas/no_megaphone_50x50px.svg">
+          </div>
+        </div>
+        <div id="roominfo">
+          <div id="roomnumberinfo">
+              Room X
+          </div>
+          <div id="roomparticipantsinfo">
+              Y participants
+          </div>
+        </div>
+
+        <div id="toast-container"></div>
+        <div id="input-toast-container"></div>
+
+      </div>
+      <div id="offlineareatitle">
+          <div class="t_center">Offline Area</div>
+        </div>
+      <div id="offlinearea">
+      </div>
+    </div>
+  </body>
+</html>
+
+
+<!-- Template toast which gets copied and populated with data -->
+<div id='initial-toast' class="toast" role="alert" data-autohide="false">
+  <div class="toast-header">
+    <strong class="mr-auto" style>Sender</strong>
+    <!-- <small class="text-muted">Sent time</small> -->
+    <button type="button" class="ml-2 mb-1 close clickable" data-dismiss="toast">
+      <span aria-hidden="true" class="clickable">&times;</span>
+    </button>
+  </div>
+  <div class="toast-body">
+    Message content.
+  </div>
+</div>
+
+  <div id='initial-input-toast' class="toast" role="alert" data-autohide="false">
+  <div class="toast-header">
+    <strong class="mr-auto" style>Message to</strong>
+    <!-- <small class="text-muted">Sent time</small> -->
+    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">
+      <span aria-hidden="true" class="clickable">&times;</span>
+    </button>
+  </div>
+  <div class="toast-body">
+    <input type="text" id="text-message-field" spellcheck="false" name="message">
+    <button type="button" onclick="onSendMessageButtonPressed()">Send</button>
+  </div>
+</div>

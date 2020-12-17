@@ -1,0 +1,91 @@
+<html>
+  <head>
+    <title>GroupChat</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script src="/../cookiehandler/cookiehandler.js"></script>
+    <script src="/../avatarcreator/avatargenerator.js"></script>
+    <script type="text/javascript">
+
+      function pageLoaded() {
+        console.log("here")
+
+        if(usernameCookieExists()) {
+          document.getElementById("usernamefield").value = getUsernameCookie();
+        }
+
+        if(roomIdCookieExists()) {
+          document.getElementById("roomidfield").value = getRoomIdCookie();
+        }
+
+        if(avatarCookieExists()) {
+          console.log(getAvatarCookie())
+        	document.getElementById('avatar_image').src = getAvatarCookie();
+        } else {
+
+        	let avatarGenerator = new AvatarGenerator();
+        	avatarGenerator.randomize();
+
+        	let avatar_url = avatarGenerator.generateURLFromOptions();
+
+          console.log(avatar_url)
+
+        	document.getElementById('avatar_image').src = avatar_url;
+
+        	setAvatarCookie(avatar_url);
+        }
+
+      }
+
+      function buttonPressed() {
+
+        var name = document.getElementById("usernamefield").value;
+        var room = document.getElementById("roomidfield").value;
+        var url = "/"+room+"?username=" + name;
+
+        setUsernameCookie(name);
+        setRoomIdCookie(room);
+        relocateTo(url);
+      }
+
+
+
+      function relocateTo(url) {
+
+        document.location.href = encodeURI( url );
+      }
+    </script>
+    <link rel="stylesheet" type="text/css" href="startpage.css">
+    <script>window.history.replaceState( null, "2D Market", "/" )</script>
+  </head>
+  <body onload="pageLoaded()">
+    <div id="pagesplit">
+        <div id="accessform" class="group">
+            <div class="center">
+              <h2> GroupChat </h2>
+              <p> radically better group chats </p>
+            </div>
+            <div class='avatar_wrapper'>
+            	<img id='avatar_image' src='' />
+            	<a href=/avatarcreator >Customize Your Avatar </a>
+            </div>
+            <div class='input_wrapper ui_element_wrapper'>
+							<div class='input_description_text'>Room</div>
+            	<input type="text" placeholder="HCI Discussion Room" id="roomidfield" class="inputfield">
+            </div>
+            <div class='input_wrapper ui_element_wrapper'>
+              <div class='input_description_text'>Username</div>
+              <input type="text" placeholder="Alice Smith" id="usernamefield" class="inputfield">
+            </div>
+            <div class='ui_element_wrapper'>
+            	<input type="button" onclick="buttonPressed()" value="Enter Room" class="inputfield" id="enterbutton">
+            </div>
+
+        </div>
+      	<div id='footer'>
+          <div id='links'>
+          	<a href='https://www.notion.so/fabianla/HCI-Project-Blog-Group-6-0ad4dbe1ea684b02a3ff3853f6a5699b'>About this project</a>
+          </div>
+        </div>
+  </div>
+  </body>
+</html>

@@ -1,0 +1,166 @@
+<html>
+  <head>
+    <title>GroupChat</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script src='avatargenerator.js'></script>
+    <script src='/cookiehandler/cookiehandler.js'></script>
+    <script type="text/javascript">
+
+      
+
+      function pageLoaded() {
+
+        avatarGenerator = new AvatarGenerator();
+        selected_menu_item = 'skinColor'
+
+        if (avatarCookieExists()) {
+          avatarGenerator.getOptionsFromURL(getAvatarCookie());
+        }
+
+        document.getElementById('save_button').addEventListener('click', function() {
+          saveButtonClicked();
+        })
+
+
+        generateButtons()
+        updateBigAvatar()
+
+        var middle_area = document.getElementById('middle_area');
+
+        generateAvatarOptions('skinColor')
+
+        document.getElementById('big_avatar').addEventListener('click',function() {
+          randomizeAvatar();
+        })
+
+        function handleAvatarOptionClick(avatar_option) {
+          let id = avatar_option.id;
+
+          let option = id.split('_')[0]
+          let value = id.split('_')[1]
+
+          console.log(option,value)
+
+          avatarGenerator.setOption(option,value)
+
+          updateBigAvatar();
+          generateButtons()
+        }
+
+        function updateBigAvatar() {
+          document.getElementById('big_avatar').src = avatarGenerator.generateURLFromOptions();
+        }
+
+        function generateAvatarOptions(option){
+
+          var middle_area = document.getElementById('middle_area');
+          middle_area.innerHTML = '';          
+
+          for (var i in avatarGenerator.availableOptions[option]) {
+
+            let o = avatarGenerator.availableOptions[option][i]
+
+            let avatar_option = document.createElement('img')
+            avatar_option.src = avatarGenerator.generateURLFromOptions(option,o);
+            avatar_option.classList.add('avatar_option');
+            avatar_option.classList.add('clickable')
+            avatar_option.id = option + '_' + o
+
+            middle_area.append(avatar_option);
+
+            avatar_option.addEventListener("click", function() {
+              handleAvatarOptionClick(avatar_option);
+            })
+
+          }
+        }
+
+        function randomizeAvatar() {
+          avatarGenerator.randomize()
+          updateBigAvatar()
+          generateButtons()
+          generateAvatarOptions('skinColor')
+        }
+
+        function generateButtons() {
+
+          document.getElementById('dropdown_menu_wrapper').innerHTML = ''
+
+          for (let option in avatarGenerator.availableOptions) {
+            let button = document.createElement('button')
+            button.innerHTML = avatarGenerator.prettyNamesForOptions[option]
+            button.classList.add('menu_button')
+            button.classList.add('button_style_1')
+            button.classList.add('clickable')
+
+            if (option == selected_menu_item) {
+              console.log(option,selected_menu_item)
+              button.classList.add('selected_menu_button')
+            }
+
+            document.getElementById('dropdown_menu_wrapper').append(button);
+
+
+
+
+            button.addEventListener('click', function() {
+              menuButtonClicked(option)
+            })
+
+          }
+
+        }
+
+        function menuButtonClicked(option) {
+          console.log(option)
+          generateAvatarOptions(option)
+          selected_menu_item = option
+          generateButtons()
+        }
+
+        function saveButtonClicked() {
+          console.log("saveButtonClicked");
+          setAvatarCookie(avatarGenerator.generateURLFromOptions())
+          relocateTo("/");
+        }
+
+        function relocateTo(url) {
+          document.location.href = encodeURI( url );
+        }
+
+        
+      }
+
+    </script>
+    <link rel="stylesheet" type="text/css" href="avatarcreator.css">
+  </head>
+  <body onload="pageLoaded()">
+    <div id="bounding_box">
+        <div id="top_area">
+          <div id='title_wrapper'>
+            <h2 id='title'>Customize Your Avatar</h2>
+          </div>
+          <div id='big_avatar_wrapper'>
+            <img id='big_avatar' class='clickable' src='' />  
+          </div>
+          <div id='dropdown_menu_wrapper'>
+            <div>Category:</div>
+            <select name="Options" id="dropdown_menu">
+              <option value="volvo"> Volvo</option>
+              <option value="vw"> Vw</option>
+            </select>
+          </div>
+        </div>
+        <div id="middle_area">
+          <div id="avatar_option_area">
+            
+          </div>
+        </div>
+        <div id="bottom_area">
+          <button id='save_button' class='button_style_1 clickable'>Save Avatar</button>
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>

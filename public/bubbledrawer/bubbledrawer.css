@@ -1,0 +1,17 @@
+#group_bubble_circles {
+
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+.group_bubble {
+
+	position: absolute;
+	transform: translate( calc( -50% + 48px ), calc( -50% + 60px ));
+	transition: all 0.1s;
+	border-style: solid;
+	border-color: black;
+	border-width: 3px;
+	border-radius: 50%;
+}
