@@ -1,21 +1,50 @@
 # How to start the servers
 
-## application (?) server
+## How to run this
 
-``$ sudo node server.js``
+We have to run multiple processes at the same time. To do that, we can use tmux. We first create two new tmux sessions:
 
-## peerjs server
+```
+$ tmux new -s node-server
+$ tmux new -s peerjs-server
+```
 
-`$ peerjs --port 9000 --key peerjs --sslkey private.key --sslcert certificate.crt --path /hci_app --sslca ca_bundle.crt`
+To attach a session, type 
 
-## How to use tmux
+```
+$ tmux attach -t SESSIONNAME
+```
 
-In order to let the processes continue once the ssh session is over, we can use tmux to start the processes and then detach from the sessions.
+To detach from a session, type `ctrl-b d`.
 
-### To start a process
+### Start the nodejs server
 
-`$ tmux` and then start the process (i.e. `$ node server.js`). Now type `ctrl-b d` to detach the session.
+This application was built with nodejs v10.23.0. Make sure you have a similar version installed. 
 
-### To end a process
+To start the nodejs server, attach to the tmux session:
 
-`$ tmux ls` to see all sessions. Then `$ tmux attach -t 0` and replace 0 with the session number you need. Then just stop the process and detach again.
+```
+tmux attach -t node-server
+```
+
+Then to actually start it, type
+
+```
+$ sudo node server.js
+```
+
+After that you can deattach with `ctrl-b d`.
+
+### Start peerjs server
+
+To install the peerjs server, type the following into the console:
+
+```$ npm i peer -g```
+
+After doing that, you should be able to start the peerjs server. It is important that the certificates are properly set up. If they are not, the connection to the peerjs server will silently fail. 
+
+Attach to the peer-js tmux session, then type:
+
+```$ peerjs --port 9000 --key peerjs --sslkey private.key --sslcert certificate.crt --path /hci_app --sslca ca_bundle.crt```
+
+After that, again deattach from the tmux session.
