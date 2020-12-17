@@ -33,18 +33,22 @@ Then to actually start it, type
 $ sudo node server.js
 ```
 
-After that you can deattach with `ctrl-b d`.
+After that you can detach with `ctrl-b d`.
 
 ### Start peerjs server
 
-To install the peerjs server, type the following into the console:
+To install the peerjs server globally, type the following into the console:
 
-```$ npm i peer -g```
+```
+$ npm i peer -g
+```
 
 After doing that, you should be able to start the peerjs server. It is important that the certificates are properly set up. If they are not, the connection to the peerjs server will silently fail. 
 
 Attach to the peer-js tmux session, then type:
 
-```$ peerjs --port 9000 --key peerjs --sslkey private.key --sslcert certificate.crt --path /hci_app --sslca ca_bundle.crt```
+```
+$ peerjs --port 9000 --key peerjs --sslkey private.key --sslcert certificate.crt --path /hci_app --sslca ca_bundle.crt```
+```
 
-After that, again deattach from the tmux session.
+After that, again detach from the tmux session.
