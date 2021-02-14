@@ -3,10 +3,31 @@ const app = express()
 
 const https = require('https');
 const fs = require('fs');
+
+
+const path = "/etc/letsencrypt/live/groupchat.ch/"
+
+const keyPath = path + 'privkey.pem'
+const certPath = path + 'cert.pem'
+const caPath = path + 'chain.pem'
+
+console.log(keyPath)
+console.log(certPath)
+console.log(caPath)
+
+const privateKey = fs.readFileSync(keyPath, 'utf8');
+const certificate = fs.readFileSync(certPath, 'utf8');
+const ca = fs.readFileSync(caPath, 'utf8');
+
+// const certificate = fs.readFileSync('./certificate.crt'),
+// const ca = fs.readFileSync('./ca_bundle.crt'),
+// const priveteKey = fs.readFileSync('./private.key')
+
+
 const server = https.createServer({
-  cert: fs.readFileSync('./certificate.crt'),
-  ca: fs.readFileSync('./ca_bundle.crt'),
-  key: fs.readFileSync('./private.key')
+  cert: certificate,
+  ca: ca,
+  key: privateKey
 }, app)
 
 const io = require('socket.io')(server)

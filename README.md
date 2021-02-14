@@ -58,7 +58,7 @@ After doing that, you should be able to start the peerjs server. It is important
 Attach to the peer-js tmux session, then type:
 
 ```
-$ peerjs --port 9000 --key peerjs --sslkey private.key --sslcert certificate.crt --path /hci_app --sslca ca_bundle.crt```
+$ peerjs --port 9000 --key peerjs --sslkey private.key --sslcert certificate.crt --path /hci_app --sslca ca_bundle.crt
 ```
 
 After that, again detach from the tmux session.
